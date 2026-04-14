@@ -1,11 +1,11 @@
 from fastapi import Header
 
-from vibra.infrastructure.spotify.auth_manager import SpotifyAuthManager
+from vibra.domain import AuthManager
 from vibra.infrastructure.spotify.client import SpotifyClient
 from vibra.injections import container
 
 
-def get_auth_manager() -> SpotifyAuthManager:
+def get_auth_manager() -> AuthManager:
     return container.infrastructure.spotify_auth_manager()  # type: ignore[no-any-return]
 
 
@@ -15,7 +15,7 @@ def get_bearer_token(authorization: str | None = Header(default=None)) -> str | 
 
     parts = authorization.split()
     if len(parts) != 2 or parts[0].lower() != "bearer":
-        return
+        return None
 
     return parts[1]
 

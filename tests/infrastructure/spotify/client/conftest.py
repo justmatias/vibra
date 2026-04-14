@@ -1,7 +1,7 @@
 import pytest
 
-from vibra.infrastructure.spotify import SpotifyClient
 from tests.helpers.auth import get_spotify_token
+from vibra.infrastructure.spotify import SpotifyClient
 
 
 @pytest.fixture

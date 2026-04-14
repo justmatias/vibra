@@ -14,8 +14,7 @@ from vibra.api.schemas import (
     RefreshRequest,
     TokenResponse,
 )
-from vibra.domain import SpotifyUser
-from vibra.infrastructure.spotify.auth_manager import SpotifyAuthManager
+from vibra.domain import AuthManager, SpotifyUser
 from vibra.utils import Settings
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
@@ -23,7 +22,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.get("/authorize")
 def authorize(
-    auth: Annotated[SpotifyAuthManager, Depends(get_auth_manager)],
+    auth: Annotated[AuthManager, Depends(get_auth_manager)],
 ) -> AuthorizeResponse:
     url = auth.get_auth_url()
     return AuthorizeResponse(auth_url=url)
@@ -32,7 +31,7 @@ def authorize(
 @router.post("/callback")
 def callback(
     body: CallbackRequest,
-    auth: Annotated[SpotifyAuthManager, Depends(get_auth_manager)],
+    auth: Annotated[AuthManager, Depends(get_auth_manager)],
 ) -> TokenResponse:
     token = auth.get_access_token(body.code)
     if not token:
@@ -45,7 +44,7 @@ def callback(
 @router.post("/refresh")
 def refresh(
     body: RefreshRequest,
-    auth: Annotated[SpotifyAuthManager, Depends(get_auth_manager)],
+    auth: Annotated[AuthManager, Depends(get_auth_manager)],
 ) -> TokenResponse:
     token = auth.refresh_token(body.refresh_token)
     if not token:
