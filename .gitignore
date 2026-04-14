@@ -34,3 +34,6 @@ playground/
 
 # Tests
 .coverage
+
+# Claude Code
+CLAUDE.md 
