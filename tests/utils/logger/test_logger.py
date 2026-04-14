@@ -1,6 +1,6 @@
 from collections.abc import Generator
 
-from spotify_vibe_searcher.utils import LogLevel, log
+from vibra.utils import LogLevel, log
 
 
 def test_log(

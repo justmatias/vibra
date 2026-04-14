@@ -1,6 +1,6 @@
-from spotify_vibe_searcher.infrastructure import GeniusClient, SpotifyClient
-from spotify_vibe_searcher.injections import Container, container
-from spotify_vibe_searcher.services import LibrarySyncService
+from vibra.infrastructure import GeniusClient, SpotifyClient
+from vibra.injections import Container, container
+from vibra.services import LibrarySyncService
 
 
 def test_container_initialization() -> None:

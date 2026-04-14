@@ -1,6 +1,6 @@
 import pytest
 
-from spotify_vibe_searcher.infrastructure.spotify import SpotifyClient
+from vibra.infrastructure.spotify import SpotifyClient
 from tests.helpers.auth import get_spotify_token
 
 

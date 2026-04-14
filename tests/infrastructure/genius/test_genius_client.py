@@ -1,6 +1,6 @@
 import pytest
 
-from spotify_vibe_searcher.infrastructure.genius.client import GeniusClient
+from vibra.infrastructure.genius.client import GeniusClient
 
 
 @pytest.mark.vcr

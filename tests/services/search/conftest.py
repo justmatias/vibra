@@ -5,10 +5,10 @@ from collections.abc import Generator
 import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from spotify_vibe_searcher.domain import EnrichedTrack, SavedTrack
-from spotify_vibe_searcher.infrastructure import LLMClient, VectorDBRepository
-from spotify_vibe_searcher.services import SearchService
-from spotify_vibe_searcher.utils import Settings
+from vibra.domain import EnrichedTrack, SavedTrack
+from vibra.infrastructure import LLMClient, VectorDBRepository
+from vibra.services import SearchService
+from vibra.utils import Settings
 
 
 @pytest.fixture

@@ -1,6 +1,6 @@
 from spotipy.oauth2 import SpotifyOauthError
 
-from spotify_vibe_searcher.infrastructure import SpotifyAuthManager
+from vibra.infrastructure import SpotifyAuthManager
 
 
 def get_spotify_token() -> str | None:

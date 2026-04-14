@@ -1,6 +1,6 @@
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from spotify_vibe_searcher.domain.user import SpotifyUser
+from vibra.domain.user import SpotifyUser
 
 
 def test_spotify_user_from_api_response(

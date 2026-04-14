@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from spotify_vibe_searcher.infrastructure.llm import LLMClient
+from vibra.infrastructure.llm import LLMClient
 
 
 @pytest.fixture

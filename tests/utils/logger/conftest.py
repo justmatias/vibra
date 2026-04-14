@@ -2,7 +2,7 @@ from collections.abc import Generator
 
 import pytest
 
-from spotify_vibe_searcher.utils import LogLevel, get_logger
+from vibra.utils import LogLevel, get_logger
 
 
 @pytest.fixture

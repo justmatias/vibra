@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "spotify-vibe-searcher"
+name = "vibra"
 version = "0.0.1"
-description = "Spotify Vibe Searcher is a LLM-powered search engine application that allows you to search your personal Spotify liked songs library using natural language abstract descriptions"
+description = "Vibra is a LLM-powered search engine application that allows you to search your personal Spotify liked songs library using natural language abstract descriptions"
 readme = "README.md"
 license = { text = "MIT" }
 
@@ -29,10 +29,10 @@ dependencies = [
 
 
 [project.urls]
-repository = "https://github.com/justmatias/spotify-vibe-searcher"
+repository = "https://github.com/justmatias/vibra"
 
 [tool.setuptools]
-packages = ["spotify_vibe_searcher"]
+packages = ["vibra"]
 
 [dependency-groups]
 dev = [
@@ -136,17 +136,17 @@ disable_error_code = ["var-annotated"]
 ##################################
 
 [tool.coverage.run]
-omit = ["spotify_vibe_searcher/ui/*"]
+omit = ["vibra/ui/*"]
 
 ##################################
 # poe tasks configuration        #
 ##################################
 
 [tool.poe.tasks]
-dev = "streamlit run spotify_vibe_searcher/main.py"
+dev = "streamlit run vibra/main.py"
 format = "pre-commit run --all-files --verbose"
 build = "pip install -e ."
-test = "pytest --cov=spotify_vibe_searcher --cov-report=term-missing:skip-covered"
+test = "pytest --cov=vibra --cov-report=term-missing:skip-covered"
 
 
 ##################################
@@ -156,7 +156,7 @@ test = "pytest --cov=spotify_vibe_searcher --cov-report=term-missing:skip-covere
 [tool.semantic_release]
 branch = "main"
 commit_message = "chore(release): release version {version}"
-version_variables = ["spotify_vibe_searcher/__init__.py:__version__"]
+version_variables = ["vibra/__init__.py:__version__"]
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"

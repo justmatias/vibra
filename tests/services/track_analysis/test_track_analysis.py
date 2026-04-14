@@ -1,7 +1,7 @@
 import pytest
 
-from spotify_vibe_searcher.domain import SavedTrack
-from spotify_vibe_searcher.services import TrackAnalysisService
+from vibra.domain import SavedTrack
+from vibra.services import TrackAnalysisService
 
 
 @pytest.mark.vcr

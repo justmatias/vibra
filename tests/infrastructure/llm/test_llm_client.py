@@ -1,7 +1,7 @@
 # pylint: disable=protected-access
 import pytest
 
-from spotify_vibe_searcher.infrastructure.llm import LLMClient
+from vibra.infrastructure.llm import LLMClient
 
 
 def test_client_reuses_instance(llm_client: LLMClient) -> None:

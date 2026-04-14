@@ -2639,7 +2639,7 @@ wheels = [
 ]
 
 [[package]]
-name = "spotify-vibe-searcher"
+name = "vibra"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [

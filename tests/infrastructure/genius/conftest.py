@@ -1,6 +1,6 @@
 import pytest
 
-from spotify_vibe_searcher.infrastructure.genius import GeniusClient
+from vibra.infrastructure.genius import GeniusClient
 
 
 @pytest.fixture

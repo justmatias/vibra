@@ -7,7 +7,7 @@ It is registered as a pytest plugin in conftest.py.
 from polyfactory.factories.pydantic_factory import ModelFactory
 from polyfactory.pytest_plugin import register_fixture
 
-from spotify_vibe_searcher.domain import (
+from vibra.domain import (
     EnrichedTrack,
     SavedTrack,
     SpotifyAlbum,

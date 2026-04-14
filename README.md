@@ -1,4 +1,4 @@
-# 🎵 Spotify Semantic Vibe Searcher
+# 🎵 Vibra
 
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue)
 ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B)
@@ -99,8 +99,8 @@ A **LLM-powered search engine** application that lets you search your Spotify "L
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/justmatias/spotify-vibe-searcher.git
-   cd spotify-vibe-searcher
+   git clone https://github.com/justmatias/vibra.git
+   cd vibra
    ```
 
 2. **Set up environment**
@@ -153,7 +153,7 @@ Navigate to `http://localhost:8501` in your browser.
 ## 🏗️ Architecture
 
 ```
-spotify_vibe_searcher/
+vibra/
 ├── domain/           # Domain models (Track, SearchResult, etc.)
 ├── infrastructure/   # External integrations
 │   ├── spotify/     # Spotify API client

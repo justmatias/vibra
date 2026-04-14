@@ -1,6 +1,6 @@
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from spotify_vibe_searcher.domain.track import (
+from vibra.domain.track import (
     SavedTrack,
     SpotifyAlbum,
     SpotifyArtist,

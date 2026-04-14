@@ -5,17 +5,17 @@ from unittest.mock import MagicMock
 import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
-from spotify_vibe_searcher.domain import (
+from vibra.domain import (
     EnrichedTrack,
     SavedTrack,
     SpotifyAlbum,
     SpotifyArtist,
     SpotifyTrack,
 )
-from spotify_vibe_searcher.infrastructure import SpotifyClient, VectorDBRepository
-from spotify_vibe_searcher.injections import container
-from spotify_vibe_searcher.services import LibrarySyncService, TrackAnalysisService
-from spotify_vibe_searcher.utils import Settings
+from vibra.infrastructure import SpotifyClient, VectorDBRepository
+from vibra.injections import container
+from vibra.services import LibrarySyncService, TrackAnalysisService
+from vibra.utils import Settings
 
 
 @pytest.fixture

@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from spotify_vibe_searcher.infrastructure.spotify.auth_manager import SpotifyAuthManager
+from vibra.infrastructure.spotify.auth_manager import SpotifyAuthManager
 
 
 @pytest.mark.usefixtures("setup_get_auth_url")
