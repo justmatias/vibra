@@ -15,7 +15,6 @@ dependencies = [
   "lyricsgenius>=3.7.5",
   "python-dotenv>=1.2.1",
   "spotipy>=2.25.2",
-  "streamlit>=1.52.2",
   "loguru>=0.7.3",
   "pydantic>=2.12.4",
   "pydantic-settings>=2.12",
@@ -138,14 +137,13 @@ disable_error_code = ["var-annotated"]
 ##################################
 
 [tool.coverage.run]
-omit = ["vibra/ui/*"]
+omit = []
 
 ##################################
 # poe tasks configuration        #
 ##################################
 
 [tool.poe.tasks]
-dev = "python -m vibra.main"
 api = "uvicorn vibra.api.app:app --reload --host 0.0.0.0 --port 8000"
 format = "pre-commit run --all-files --verbose"
 build = "pip install -e ."
