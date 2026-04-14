@@ -17,6 +17,11 @@ class AppSettings(BaseSettings):
         case_sensitive=False,
     )
 
+    APPLICATION_PORT: int = Field(
+        default=8000,
+        description="Port for the API server",
+    )
+
     # Spotify API Configuration
     SPOTIFY_CLIENT_ID: str = Field(
         description="Spotify API Client ID",

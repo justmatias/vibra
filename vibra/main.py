@@ -1,4 +1,9 @@
-from vibra.ui.app import app  # pragma: no cover
+from vibra.api import run_api
 
-if __name__ == "__main__":  # pragma: no cover
-    app()
+
+def main() -> None:
+    run_api()
+
+
+if __name__ == "__main__":
+    main()
