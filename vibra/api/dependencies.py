@@ -1,7 +1,7 @@
 from fastapi import Header
 
 from vibra.domain import AuthManager
-from vibra.infrastructure.spotify.client import SpotifyClient
+from vibra.infrastructure import SpotifyClient
 from vibra.injections import container
 
 
@@ -22,4 +22,4 @@ def get_bearer_token(authorization: str | None = Header(default=None)) -> str | 
 
 def get_spotify_client_for_token(token: str) -> SpotifyClient:
     container.infrastructure.config.spotify.access_token.from_value(token)
-    return container.infrastructure.spotify_client()  # type: ignore[no-any-return]
+    return container.infrastructure.library_client()  # type: ignore[no-any-return]
