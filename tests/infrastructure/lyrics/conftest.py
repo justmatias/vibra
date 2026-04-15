@@ -1,6 +1,6 @@
 import pytest
 
-from vibra.infrastructure.genius import GeniusClient
+from vibra.infrastructure.lyrics import GeniusClient
 
 
 @pytest.fixture

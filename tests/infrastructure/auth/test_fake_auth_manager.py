@@ -88,12 +88,12 @@ def test_refresh_token_returns_configured_token() -> None:
     ],
 )
 def test_none_simulates_failure(field: str, kwarg: str) -> None:
-    manager = FakeAuthManager(**{kwarg: None})
+    manager = FakeAuthManager(**{kwarg: None})  # type: ignore[arg-type]
 
     method_map = {
         "access_token": lambda: manager.get_access_token("code"),
         "refresh_token": lambda: manager.refresh_token("token"),
-        "cached_token": lambda: manager.get_cached_token(),
+        "cached_token": lambda: manager.get_cached_token(),  # pylint: disable=unnecessary-lambda
     }
 
     assert method_map[field]() is None

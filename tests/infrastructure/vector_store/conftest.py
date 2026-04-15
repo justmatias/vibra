@@ -6,7 +6,7 @@ import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import EnrichedTrack, SavedTrack
-from vibra.infrastructure import VectorDBRepository
+from vibra.infrastructure.vector_store import VectorDBRepository
 from vibra.utils import Settings
 
 
@@ -26,7 +26,7 @@ def enriched_track_with_vibe(
     return enriched_track_factory.build(
         track=saved_track_factory.build(),
         vibe_description="Generic vibe description for testing embeddings",
-        has_lyrics=True,
+        lyrics="some lyrics",
     )
 
 
@@ -36,7 +36,7 @@ def enriched_track_without_vibe(
 ) -> EnrichedTrack:
     return enriched_track_factory.build(
         vibe_description="",
-        has_lyrics=False,
+        lyrics="",
     )
 
 
@@ -49,16 +49,16 @@ def enriched_tracks_batch(
         enriched_track_factory.build(
             track=saved_track_factory.build(),
             vibe_description="Generic vibe 1",
-            has_lyrics=True,
+            lyrics="lyrics 1",
         ),
         enriched_track_factory.build(
             track=saved_track_factory.build(),
             vibe_description="Generic vibe 2",
-            has_lyrics=True,
+            lyrics="lyrics 2",
         ),
         enriched_track_factory.build(
             vibe_description="",
-            has_lyrics=False,
+            lyrics="",
         ),
     ]
 

@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from vibra.infrastructure.llm import LLMClient
+from vibra.infrastructure.generation import LLMClient
 
 
 @pytest.fixture

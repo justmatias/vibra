@@ -2,7 +2,7 @@
 import pytest
 
 from vibra.domain import EnrichedTrack
-from vibra.infrastructure import VectorDBRepository
+from vibra.infrastructure.vector_store import VectorDBRepository
 
 
 def test_client_lazy_loading(
@@ -108,7 +108,6 @@ def test_search_by_vibe_finds_matching_tracks(
 def test_search_by_vibe_returns_correct_number_of_results(
     vectordb_repository: VectorDBRepository,
 ) -> None:
-    """Test that search respects the n_results parameter."""
     results = vectordb_repository.search_by_vibe("energetic music", n_results=2)
 
     assert len(results["ids"][0]) <= 2
@@ -162,6 +161,15 @@ def test_count_tracks_empty(
 ) -> None:
     count = vectordb_repository.count_tracks()
     assert count == 0
+
+
+def test_add_tracks_with_no_valid_tracks_is_noop(
+    vectordb_repository: VectorDBRepository,
+    enriched_track_without_vibe: EnrichedTrack,
+) -> None:
+    vectordb_repository.add_tracks([enriched_track_without_vibe])
+
+    assert vectordb_repository.count_tracks() == 0
 
 
 @pytest.mark.vcr

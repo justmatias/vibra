@@ -1,12 +1,10 @@
-from unittest.mock import MagicMock
-
 import pytest
 
 from vibra.domain import EnrichedTrack, SyncProgress
+from vibra.infrastructure.library.fake import FakeLibrary
 from vibra.services import LibrarySyncService
 
 
-@pytest.mark.vcr
 def test_sync_library_yields_progress_and_tracks(
     library_sync_service: LibrarySyncService,
 ) -> None:
@@ -16,7 +14,6 @@ def test_sync_library_yields_progress_and_tracks(
     assert isinstance(results[1], EnrichedTrack)
 
 
-@pytest.mark.vcr
 def test_sync_library_progress_increments(
     library_sync_service: LibrarySyncService,
 ) -> None:
@@ -31,7 +28,6 @@ def test_sync_library_progress_increments(
     assert all(p.total == 3 for p in progress_updates)
 
 
-@pytest.mark.vcr
 def test_sync_library_tracks_with_and_without_lyrics(
     library_sync_service: LibrarySyncService,
 ) -> None:
@@ -50,18 +46,16 @@ def test_sync_library_tracks_with_and_without_lyrics(
     assert enriched_tracks[2].has_lyrics
 
 
-@pytest.mark.vcr
-def test_sync_library_calls_spotify_client(
+def test_sync_library_calls_library(
     library_sync_service: LibrarySyncService,
-    mock_spotify_client: MagicMock,
+    fake_library: FakeLibrary,
 ) -> None:
     list(library_sync_service.sync_library(limit=5))
 
-    mock_spotify_client.get_all_liked_songs.assert_called_once_with(max_tracks=5)
+    assert len(fake_library.get_all_liked_songs_calls) == 1
+    assert fake_library.get_all_liked_songs_calls[0]["max_tracks"] == 5
 
 
-@pytest.mark.vcr
-@pytest.mark.vcr
 def test_sync_library_fetches_lyrics_for_tracks(
     library_sync_service: LibrarySyncService,
 ) -> None:
@@ -84,8 +78,6 @@ def test_enriched_track_properties(
     assert not enriched_track_without_lyrics.lyrics
 
 
-@pytest.mark.vcr
-@pytest.mark.vcr
 @pytest.mark.usefixtures("_populate_tracks")
 def test_sync_library_skips_existing_tracks(
     library_sync_service: LibrarySyncService,

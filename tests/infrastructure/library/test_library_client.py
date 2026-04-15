@@ -1,7 +1,7 @@
 import pytest
 
 from vibra.domain import SavedTrack, SpotifyArtist, SpotifyUser
-from vibra.infrastructure.spotify import SpotifyClient
+from vibra.infrastructure.library import SpotifyClient
 
 
 @pytest.mark.vcr

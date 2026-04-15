@@ -1,13 +1,11 @@
 import pytest
 
 from tests.helpers.auth import get_spotify_token
-from vibra.infrastructure.spotify import SpotifyClient
+from vibra.infrastructure.library import SpotifyClient
 
 
 @pytest.fixture
 def spotify_client() -> SpotifyClient:
-    # Use real token from auth helper for recording, fallback to mocked token for replay
-    # if auth helper returns None (no cache)
     token = get_spotify_token() or "MOCKED_TOKEN"
     return SpotifyClient(access_token=token)
 
