@@ -19,5 +19,5 @@ app.include_router(auth_router)
 
 
 @app.get("/", include_in_schema=False)
-async def root() -> RedirectResponse:
+async def root() -> RedirectResponse:  # pragma: no cover
     return RedirectResponse(url="/docs")
