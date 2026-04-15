@@ -3,31 +3,29 @@
 import asyncio
 from collections.abc import Generator
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from vibra.domain import EnrichedTrack, SavedTrack, SyncProgress
-from vibra.infrastructure import (
-    GeniusClient,
-    SpotifyClient,
-    VectorDBRepository,
-)
+from vibra.domain.interfaces import Library, LyricsProvider, VectorStore
 from vibra.utils.logger import LogLevel, log
 
 from .track_analysis import TrackAnalysisService
 
 
 class LibrarySyncService(BaseModel):
-    spotify_client: SpotifyClient
-    genius_client: GeniusClient
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    library: Library
+    lyrics_provider: LyricsProvider
     track_analysis_service: TrackAnalysisService
-    vectordb_repository: VectorDBRepository
+    vector_store: VectorStore
 
     def sync_library(
         self, limit: int = 20
     ) -> Generator[SyncProgress | EnrichedTrack, None, None]:
         log(f"Starting library sync (limit={limit})...", LogLevel.INFO)
 
-        saved_tracks = self.spotify_client.get_all_liked_songs(max_tracks=limit)
+        saved_tracks = self.library.get_all_liked_songs(max_tracks=limit)
         self._enrich_artist_genres(saved_tracks)
         total = len(saved_tracks)
         log(f"Found {total} tracks to process.", LogLevel.INFO)
@@ -47,21 +45,21 @@ class LibrarySyncService(BaseModel):
         self, saved_track: SavedTrack
     ) -> Generator[EnrichedTrack, None, None]:
         track = saved_track.track
-        if self.vectordb_repository.track_exists(track.id_):
+        if self.vector_store.track_exists(track.id_):
             log(f"Skipping '{track.name}' - already indexed.", LogLevel.DEBUG)
             return
 
         try:
             enriched = self._enrich_track(saved_track)
             if enriched.vibe_description:
-                self.vectordb_repository.add_track(enriched)
+                self.vector_store.add_track(enriched)
             yield enriched
         except Exception as e:  # pragma: no cover  # noqa: BLE001
             log(f"Failed to enrich '{track.name}': {e}", LogLevel.WARNING)
 
     def _enrich_track(self, saved_track: SavedTrack) -> EnrichedTrack:
         """Enrich a track with lyrics and vibe description."""
-        lyrics = self.genius_client.search_song(
+        lyrics = self.lyrics_provider.search_song(
             title=saved_track.track.name,
             artist=saved_track.track.artist_names,
         )
@@ -88,7 +86,7 @@ class LibrarySyncService(BaseModel):
             for saved_track in saved_tracks
             for artist in saved_track.track.artists
         ]
-        artists_with_genres = self.spotify_client.get_artists(artist_ids)
+        artists_with_genres = self.library.get_artists(artist_ids)
         artist_map = {artist.id_: artist for artist in artists_with_genres}
 
         for saved_track in saved_tracks:

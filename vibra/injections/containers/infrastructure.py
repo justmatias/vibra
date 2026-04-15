@@ -16,14 +16,14 @@ class InfrastructureContainer(containers.DeclarativeContainer):
 
     config = providers.Configuration()
 
-    # Factories(one instance per user)
-    spotify_client = providers.Factory(
+    # Factories (one instance per user)
+    library_client = providers.Factory(
         SpotifyClient,
         access_token=config.spotify.access_token,
     )
 
     # Singletons
     spotify_auth_manager = providers.Singleton(SpotifyAuthManager)
-    genius_client = providers.Singleton(GeniusClient)
-    llm_client = providers.Singleton(LLMClient)
-    vectordb_repository = providers.Singleton(VectorDBRepository)
+    lyrics_client = providers.Singleton(GeniusClient)
+    text_generator = providers.Singleton(LLMClient)
+    vector_store = providers.Singleton(VectorDBRepository)

@@ -109,19 +109,7 @@ class VectorDBRepository(BaseModel):
         return len(result["ids"]) > 0
 
     def search_by_vibe(self, query: str, n_results: int = 10) -> dict[str, list]:
-        """Search for tracks by vibe description using semantic similarity.
-
-        Args:
-            query: Natural language query describing the desired vibe.
-            n_results: Maximum number of results to return.
-
-        Returns:
-            Dictionary containing:
-                - ids: List of track IDs
-                - documents: List of vibe descriptions
-                - metadatas: List of track metadata
-                - distances: List of similarity distances (lower is better)
-        """
+        """Search for tracks by vibe description using semantic similarity."""
         log(f"Searching for vibe: '{query}'", LogLevel.INFO)
         results = self.collection.query(
             query_texts=[query],
