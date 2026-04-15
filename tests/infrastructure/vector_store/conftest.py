@@ -6,8 +6,25 @@ import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import EnrichedTrack, SavedTrack
-from vibra.infrastructure.vector_store import VectorDBRepository
+from vibra.infrastructure.vector_store import FakeVectorStore, VectorDBRepository
 from vibra.utils import Settings
+
+
+@pytest.fixture
+def fake_vector_store() -> FakeVectorStore:
+    return FakeVectorStore()
+
+
+@pytest.fixture
+def track_with_vibe(
+    enriched_track_factory: ModelFactory[EnrichedTrack],
+    saved_track_factory: ModelFactory[SavedTrack],
+) -> EnrichedTrack:
+    return enriched_track_factory.build(
+        track=saved_track_factory.build(),
+        vibe_description="A lively pop track",
+        lyrics="some lyrics",
+    )
 
 
 @pytest.fixture

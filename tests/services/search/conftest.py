@@ -13,10 +13,18 @@ def fake_vector_store() -> FakeVectorStore:
 
 
 @pytest.fixture
-def search_service(fake_vector_store: FakeVectorStore) -> SearchService:
+def fake_text_generator() -> FakeTextGenerator:
+    return FakeTextGenerator()
+
+
+@pytest.fixture
+def search_service(
+    fake_vector_store: FakeVectorStore,
+    fake_text_generator: FakeTextGenerator,
+) -> SearchService:
     return SearchService(
         vector_store=fake_vector_store,
-        text_generator=FakeTextGenerator(),
+        text_generator=fake_text_generator,
     )
 
 
