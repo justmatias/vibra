@@ -18,7 +18,10 @@
 - [ ] `POST /api/search` — semantic vibe search
   - Files: `api/routers/search.py`, `api/schemas/search.py`
   - `SearchService.search_by_vibe` is async, works directly with FastAPI
-  - Include `preview_url` in response (from Spotify track metadata)
+  - `preview_url` exists on `SpotifyTrack` but is not stored in ChromaDB metadata yet:
+    1. Add `preview_url` to metadata dict in `VectorDBRepository.add_track` / `add_tracks` (`infrastructure/vector_store/repository.py:51`)
+    2. Add `preview_url` field to `SearchResult` (`domain/search.py`)
+    3. Pass it through in `SearchService._create_search_result` (`services/search.py:77`)
 
 **Request:**
 ```json
@@ -122,6 +125,16 @@
 ```json
 { "playlist_id": "string", "spotify_url": "string" }
 ```
+
+---
+
+## Phase 7: Multi-user Support
+
+Current architecture supports a single authenticated user (token cached to `data/cache/.spotify_cache`). This must be resolved before friend comparison and any multi-tenant use of the API.
+
+- [ ] Replace file cache with per-session token store (Redis or signed cookies)
+- [ ] Update `SpotifyAuthManager` to accept a user identifier
+- [ ] Update `SpotifyClient` factory to be keyed per user, not per process
 
 ---
 
@@ -269,12 +282,3 @@
   - Generates a self-contained HTML or PNG comparison card from a `MusicSimilarity` result
   - No external upload — user downloads and shares manually
 
----
-
-## Deferred: Multi-user Support
-
-Current architecture supports a single authenticated user (token cached to `data/cache/.spotify_cache`).
-
-- [ ] Replace file cache with per-session token store (Redis or signed cookies)
-- [ ] Update `SpotifyAuthManager` to accept a user identifier
-- [ ] Update `SpotifyClient` factory to be keyed per user, not per process
