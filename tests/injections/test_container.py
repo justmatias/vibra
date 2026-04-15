@@ -12,15 +12,15 @@ def test_singleton_container_exists() -> None:
     assert container
 
 
-def test_spotify_client_creation() -> None:
+def test_library_client_creation() -> None:
     container.infrastructure.config.spotify.access_token.from_value("test_token")
 
-    client = container.infrastructure.spotify_client()
+    client = container.infrastructure.library_client()
     assert isinstance(client, SpotifyClient)
 
 
-def test_genius_client_creation() -> None:
-    client = container.infrastructure.genius_client()
+def test_lyrics_client_creation() -> None:
+    client = container.infrastructure.lyrics_client()
     assert isinstance(client, GeniusClient)
 
 

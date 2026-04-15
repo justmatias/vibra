@@ -1,14 +1,16 @@
 import contextlib
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from vibra.domain import SavedTrack
-from vibra.infrastructure import LLMClient
+from vibra.domain.interfaces import TextGenerator
 from vibra.utils import LogLevel, log
 
 
 class TrackAnalysisService(BaseModel):
-    llm_client: LLMClient
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    text_generator: TextGenerator
 
     def _build_analysis_prompt(self, saved_track: SavedTrack, lyrics: str) -> str:  # pylint: disable=no-self-use
         genres = []
@@ -41,7 +43,7 @@ class TrackAnalysisService(BaseModel):
         with contextlib.suppress(Exception):
             prompt = self._build_analysis_prompt(saved_track, lyrics)
             log(f"Prompt: {prompt}", LogLevel.DEBUG)
-            vibe_description = await self.llm_client.generate(prompt)
+            vibe_description = await self.text_generator.generate(prompt)
             log(
                 f"Generated vibe description for: {saved_track.track.name}",
                 LogLevel.INFO,

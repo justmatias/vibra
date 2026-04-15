@@ -17,6 +17,15 @@ class AppSettings(BaseSettings):
         case_sensitive=False,
     )
 
+    APPLICATION_PORT: int = Field(
+        default=8000,
+        description="Port for the API server",
+    )
+    CORS_ALLOWED_ORIGINS: list[str] = Field(
+        default=["http://localhost:3000"],
+        description="CORS allowed origins",
+    )
+
     # Spotify API Configuration
     SPOTIFY_CLIENT_ID: str = Field(
         description="Spotify API Client ID",

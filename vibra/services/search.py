@@ -1,33 +1,26 @@
 import asyncio
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from vibra.domain import SearchResult, SearchResults
-from vibra.infrastructure import LLMClient, VectorDBRepository
+from vibra.domain.interfaces import TextGenerator, VectorStore
 from vibra.utils import LogLevel, log
 
 
 class SearchService(BaseModel):
-    vectordb_repository: VectorDBRepository
-    llm_client: LLMClient
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    vector_store: VectorStore
+    text_generator: TextGenerator
 
     async def search_by_vibe(self, query: str, n_results: int = 10) -> SearchResults:
-        """Search for tracks by vibe description using semantic similarity.
-
-        Args:
-            query: Natural language query describing the desired vibe.
-            n_results: Maximum number of results to return.
-
-        Returns:
-            SearchResults containing matching tracks with metadata.
-        """
         log(f"Searching for vibe: '{query}' (max {n_results} results)", LogLevel.INFO)
 
         refined_query = await self._refine_query(query)
         log(f"Refined query: '{refined_query}'", LogLevel.INFO)
 
         raw_results = await asyncio.to_thread(
-            self.vectordb_repository.search_by_vibe, refined_query, n_results
+            self.vector_store.search_by_vibe, refined_query, n_results
         )
         search_results = self._transform_results(query, raw_results)
 
@@ -47,7 +40,7 @@ class SearchService(BaseModel):
             "against a database of song analyses. Return ONLY the refined query text.\n\n"
             f"Original query: '{query}'"
         )
-        return await self.llm_client.generate(prompt)
+        return await self.text_generator.generate(prompt)
 
     def _transform_results(
         self, query: str, raw_results: dict[str, list]

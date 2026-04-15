@@ -1,7 +1,3 @@
-import pathlib
-from collections.abc import Generator
-from unittest.mock import MagicMock
-
 import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
@@ -12,78 +8,28 @@ from vibra.domain import (
     SpotifyArtist,
     SpotifyTrack,
 )
-from vibra.infrastructure import SpotifyClient, VectorDBRepository
-from vibra.injections import container
+from vibra.infrastructure import (
+    FakeLibrary,
+    FakeLyricsProvider,
+    FakeTextGenerator,
+    FakeVectorStore,
+)
 from vibra.services import LibrarySyncService, TrackAnalysisService
-from vibra.utils import Settings
 
 
 @pytest.fixture
-def track_analysis_service() -> TrackAnalysisService:
-    return container.services.track_analysis_service()  # type: ignore[no-any-return]
+def fake_text_generator() -> FakeTextGenerator:
+    return FakeTextGenerator()
 
 
 @pytest.fixture
-def vectordb_repository(tmp_path: pathlib.Path) -> Generator[VectorDBRepository]:
-    original_data_dir = Settings.DATA_DIR
-    Settings.DATA_DIR = tmp_path
-    yield VectorDBRepository()
-    Settings.DATA_DIR = original_data_dir
+def fake_lyrics_provider() -> FakeLyricsProvider:
+    return FakeLyricsProvider()
 
 
 @pytest.fixture
-def _populate_tracks(
-    vectordb_repository: VectorDBRepository,
-    realistic_liked_songs: list[SavedTrack],
-    enriched_track_factory: ModelFactory[EnrichedTrack],
-) -> None:
-    saved_track = realistic_liked_songs[1]  # Stairway to Heaven
-    enriched_track = enriched_track_factory.build(
-        track=saved_track,
-        vibe_description="Existing vibe description",
-        has_lyrics=True,
-    )
-    vectordb_repository.add_track(enriched_track)
-
-
-@pytest.fixture
-def enriched_track_with_lyrics(
-    enriched_track_factory: ModelFactory[EnrichedTrack],
-    saved_track_factory: ModelFactory[SavedTrack],
-) -> EnrichedTrack:
-    track = saved_track_factory.build()
-    return enriched_track_factory.build(
-        track=track,
-        lyrics="Test lyrics content",
-        has_lyrics=True,
-    )
-
-
-@pytest.fixture
-def enriched_track_without_lyrics(
-    enriched_track_factory: ModelFactory[EnrichedTrack],
-    saved_track_factory: ModelFactory[SavedTrack],
-) -> EnrichedTrack:
-    track = saved_track_factory.build()
-    return enriched_track_factory.build(
-        track=track,
-        lyrics="",
-        has_lyrics=False,
-    )
-
-
-@pytest.fixture
-def liked_songs(
-    saved_track_factory: ModelFactory[SavedTrack],
-) -> list[SavedTrack]:
-    return [saved_track_factory.build() for _ in range(3)]
-
-
-@pytest.fixture
-def liked_songs_lyrics(
-    saved_track_factory: ModelFactory[SavedTrack],
-) -> list[SavedTrack]:
-    return [saved_track_factory.build() for _ in range(3)]
+def fake_vector_store() -> FakeVectorStore:
+    return FakeVectorStore()
 
 
 @pytest.fixture
@@ -134,22 +80,60 @@ def realistic_liked_songs(
 
 
 @pytest.fixture
-def mock_spotify_client(
-    realistic_liked_songs: list[SavedTrack],
-) -> MagicMock:
-    client = MagicMock(spec=SpotifyClient)
-    client.get_all_liked_songs.return_value = realistic_liked_songs
-    return client
+def fake_library(realistic_liked_songs: list[SavedTrack]) -> FakeLibrary:
+    return FakeLibrary(liked_songs=realistic_liked_songs)
 
 
 @pytest.fixture
 def library_sync_service(
-    mock_spotify_client: MagicMock,
-    vectordb_repository: VectorDBRepository,
+    fake_library: FakeLibrary,
+    fake_lyrics_provider: FakeLyricsProvider,
+    fake_text_generator: FakeTextGenerator,
+    fake_vector_store: FakeVectorStore,
 ) -> LibrarySyncService:
     return LibrarySyncService(
-        spotify_client=mock_spotify_client,
-        genius_client=container.infrastructure.genius_client(),
-        track_analysis_service=container.services.track_analysis_service(),
-        vectordb_repository=vectordb_repository,
+        library=fake_library,
+        lyrics_provider=fake_lyrics_provider,
+        track_analysis_service=TrackAnalysisService(text_generator=fake_text_generator),
+        vector_store=fake_vector_store,
+    )
+
+
+@pytest.fixture
+def _populate_tracks(
+    fake_vector_store: FakeVectorStore,
+    realistic_liked_songs: list[SavedTrack],
+    enriched_track_factory: ModelFactory[EnrichedTrack],
+) -> None:
+    saved_track = realistic_liked_songs[1]  # Stairway to Heaven
+    enriched_track = enriched_track_factory.build(
+        track=saved_track,
+        vibe_description="Existing vibe description",
+        lyrics="Some lyrics",
+    )
+    fake_vector_store.add_track(enriched_track)
+
+
+@pytest.fixture
+def enriched_track_with_lyrics(
+    enriched_track_factory: ModelFactory[EnrichedTrack],
+    saved_track_factory: ModelFactory[SavedTrack],
+) -> EnrichedTrack:
+    track = saved_track_factory.build()
+    return enriched_track_factory.build(
+        track=track,
+        lyrics="Test lyrics content",
+    )
+
+
+@pytest.fixture
+def enriched_track_without_lyrics(
+    enriched_track_factory: ModelFactory[EnrichedTrack],
+    saved_track_factory: ModelFactory[SavedTrack],
+) -> EnrichedTrack:
+    track = saved_track_factory.build()
+    return enriched_track_factory.build(
+        track=track,
+        lyrics="",
+        vibe_description=None,
     )

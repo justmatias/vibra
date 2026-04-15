@@ -14,19 +14,19 @@ class ServicesContainer(containers.DeclarativeContainer):
 
     track_analysis_service = providers.Factory(
         TrackAnalysisService,
-        llm_client=infrastructure.llm_client,
+        text_generator=infrastructure.text_generator,
     )
 
     search_service = providers.Factory(
         SearchService,
-        vectordb_repository=infrastructure.vectordb_repository,
-        llm_client=infrastructure.llm_client,
+        vector_store=infrastructure.vector_store,
+        text_generator=infrastructure.text_generator,
     )
 
     library_sync_service = providers.Factory(
         LibrarySyncService,
-        spotify_client=infrastructure.spotify_client,
-        genius_client=infrastructure.genius_client,
+        library=infrastructure.library_client,
+        lyrics_provider=infrastructure.lyrics_client,
         track_analysis_service=track_analysis_service,
-        vectordb_repository=infrastructure.vectordb_repository,
+        vector_store=infrastructure.vector_store,
     )

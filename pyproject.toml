@@ -15,7 +15,6 @@ dependencies = [
   "lyricsgenius>=3.7.5",
   "python-dotenv>=1.2.1",
   "spotipy>=2.25.2",
-  "streamlit>=1.52.2",
   "loguru>=0.7.3",
   "pydantic>=2.12.4",
   "pydantic-settings>=2.12",
@@ -25,6 +24,8 @@ dependencies = [
   "ollama>=0.6.1",
   "stamina>=25.2.0",
   "pytest-asyncio>=1.3.0",
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.34.0",
 ]
 
 
@@ -136,14 +137,14 @@ disable_error_code = ["var-annotated"]
 ##################################
 
 [tool.coverage.run]
-omit = ["vibra/ui/*"]
+omit = []
 
 ##################################
 # poe tasks configuration        #
 ##################################
 
 [tool.poe.tasks]
-dev = "streamlit run vibra/main.py"
+api = "uvicorn vibra.api.app:app --reload --host 0.0.0.0 --port 8000"
 format = "pre-commit run --all-files --verbose"
 build = "pip install -e ."
 test = "pytest --cov=vibra --cov-report=term-missing:skip-covered"

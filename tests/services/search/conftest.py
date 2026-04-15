@@ -1,34 +1,29 @@
-# pylint: disable=line-too-long, duplicate-code
-import pathlib
-from collections.abc import Generator
-
 import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import EnrichedTrack, SavedTrack
-from vibra.infrastructure import LLMClient, VectorDBRepository
+from vibra.infrastructure import FakeTextGenerator, FakeVectorStore
 from vibra.services import SearchService
-from vibra.utils import Settings
 
 
 @pytest.fixture
-def vectordb_repository(tmp_path: pathlib.Path) -> Generator[VectorDBRepository]:
-    """Fixture providing a VectorDBRepository with temporary storage."""
-    original_data_dir = Settings.DATA_DIR
-    Settings.DATA_DIR = tmp_path
-    yield VectorDBRepository()
-    Settings.DATA_DIR = original_data_dir
+def fake_vector_store() -> FakeVectorStore:
+    return FakeVectorStore()
 
 
 @pytest.fixture
-def llm_client() -> LLMClient:
-    return LLMClient()
+def fake_text_generator() -> FakeTextGenerator:
+    return FakeTextGenerator()
 
 
 @pytest.fixture
-def search_service(vectordb_repository: VectorDBRepository) -> SearchService:
+def search_service(
+    fake_vector_store: FakeVectorStore,
+    fake_text_generator: FakeTextGenerator,
+) -> SearchService:
     return SearchService(
-        vectordb_repository=vectordb_repository, llm_client=LLMClient()
+        vector_store=fake_vector_store,
+        text_generator=fake_text_generator,
     )
 
 
@@ -38,8 +33,7 @@ def sample_query() -> str:
 
 
 @pytest.fixture
-def _populate_search_tracks(vectordb_repository: VectorDBRepository) -> None:
-
+def _populate_search_tracks(fake_vector_store: FakeVectorStore) -> None:
     enriched_track_factory = ModelFactory.create_factory(EnrichedTrack)
     saved_track_factory = ModelFactory.create_factory(SavedTrack)
 
@@ -61,4 +55,4 @@ def _populate_search_tracks(vectordb_repository: VectorDBRepository) -> None:
         ),
     ]
 
-    vectordb_repository.add_tracks(tracks)
+    fake_vector_store.add_tracks(tracks)
