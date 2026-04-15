@@ -1,7 +1,7 @@
 import pytest
 
 from vibra.domain import SavedTrack
-from vibra.infrastructure.generation.fake import FakeTextGenerator
+from vibra.infrastructure import FakeTextGenerator
 from vibra.services import TrackAnalysisService
 
 

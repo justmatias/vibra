@@ -1,7 +1,7 @@
 # pylint: disable=protected-access
 import pytest
 
-from vibra.infrastructure.generation import LLMClient
+from vibra.infrastructure import LLMClient
 
 
 def test_client_reuses_instance(llm_client: LLMClient) -> None:

@@ -4,14 +4,12 @@ from unittest.mock import MagicMock, patch
 import pytest
 from spotipy.oauth2 import SpotifyOauthError
 
-from vibra.infrastructure.auth import SpotifyAuthManager
+from vibra.infrastructure import SpotifyAuthManager
 
 
 @pytest.fixture
 def mock_spotify_oauth() -> Generator[MagicMock, None, None]:
-    with patch(
-        "vibra.infrastructure.auth.spotify.SpotifyOAuth"
-    ) as mock_cls:
+    with patch("vibra.infrastructure.auth.spotify.SpotifyOAuth") as mock_cls:
         yield mock_cls
 
 

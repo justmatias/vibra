@@ -2,7 +2,7 @@ import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import SavedTrack
-from vibra.infrastructure.generation.fake import FakeTextGenerator
+from vibra.infrastructure import FakeTextGenerator
 from vibra.services import TrackAnalysisService
 
 
@@ -12,7 +12,9 @@ def fake_text_generator() -> FakeTextGenerator:
 
 
 @pytest.fixture
-def track_analysis_service(fake_text_generator: FakeTextGenerator) -> TrackAnalysisService:
+def track_analysis_service(
+    fake_text_generator: FakeTextGenerator,
+) -> TrackAnalysisService:
     return TrackAnalysisService(text_generator=fake_text_generator)
 
 

@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from vibra.infrastructure.lyrics.client import GeniusClient
+from vibra.infrastructure import GeniusClient
 
 
 def test_search_song_returns_empty_string_on_exception(

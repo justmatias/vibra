@@ -2,7 +2,7 @@
 import pytest
 
 from vibra.domain import EnrichedTrack
-from vibra.infrastructure.vector_store import VectorDBRepository
+from vibra.infrastructure import VectorDBRepository
 
 
 def test_client_lazy_loading(

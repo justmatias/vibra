@@ -1,4 +1,4 @@
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long, duplicate-code
 import pathlib
 from collections.abc import Generator
 
@@ -6,7 +6,7 @@ import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import EnrichedTrack, SavedTrack
-from vibra.infrastructure.vector_store import FakeVectorStore, VectorDBRepository
+from vibra.infrastructure import FakeVectorStore, VectorDBRepository
 from vibra.utils import Settings
 
 

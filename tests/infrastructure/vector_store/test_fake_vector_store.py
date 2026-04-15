@@ -1,5 +1,5 @@
 from vibra.domain import EnrichedTrack
-from vibra.infrastructure.vector_store.fake import FakeVectorStore
+from vibra.infrastructure import FakeVectorStore
 
 
 def test_delete_tracks_removes_existing(

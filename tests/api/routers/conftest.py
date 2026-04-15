@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 from vibra.api.app import app
 from vibra.api.dependencies import get_auth_manager
 from vibra.domain import SpotifyUser
-from vibra.infrastructure.auth import FakeAuthManager
+from vibra.infrastructure import FakeAuthManager
 
 
 @pytest.fixture
@@ -31,9 +31,7 @@ def api_client() -> TestClient:
 
 
 @pytest.fixture
-def fake_auth_manager(
-    fake_token: dict[str, Any]
-) -> FakeAuthManager:
+def fake_auth_manager(fake_token: dict[str, Any]) -> FakeAuthManager:
     """A pre-configured FakeAuthManager with default happy-path values."""
     return FakeAuthManager(
         access_token=fake_token,

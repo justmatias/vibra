@@ -1,7 +1,7 @@
 import pytest
 
 from vibra.domain import EnrichedTrack, SyncProgress
-from vibra.infrastructure.library.fake import FakeLibrary
+from vibra.infrastructure import FakeLibrary
 from vibra.services import LibrarySyncService
 
 

@@ -8,10 +8,12 @@ from vibra.domain import (
     SpotifyArtist,
     SpotifyTrack,
 )
-from vibra.infrastructure.generation.fake import FakeTextGenerator
-from vibra.infrastructure.library.fake import FakeLibrary
-from vibra.infrastructure.lyrics.fake import FakeLyricsProvider
-from vibra.infrastructure.vector_store.fake import FakeVectorStore
+from vibra.infrastructure import (
+    FakeLibrary,
+    FakeLyricsProvider,
+    FakeTextGenerator,
+    FakeVectorStore,
+)
 from vibra.services import LibrarySyncService, TrackAnalysisService
 
 

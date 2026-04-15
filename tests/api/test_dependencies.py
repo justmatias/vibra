@@ -1,6 +1,6 @@
 from vibra.api.dependencies import get_auth_manager, get_spotify_client_for_token
 from vibra.domain import AuthManager
-from vibra.infrastructure.library.client import SpotifyClient
+from vibra.infrastructure import SpotifyClient
 
 
 def test_get_auth_manager_returns_auth_manager() -> None:

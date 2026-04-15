@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 
 from vibra.domain import AuthManager
-from vibra.infrastructure.auth import FakeAuthManager
+from vibra.infrastructure import FakeAuthManager
 
 SAMPLE_TOKEN: dict[str, Any] = {
     "access_token": "fake_access_token",

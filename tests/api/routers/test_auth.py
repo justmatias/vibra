@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 from vibra.api.app import app
 from vibra.api.dependencies import get_auth_manager
-from vibra.infrastructure.auth import FakeAuthManager
+from vibra.infrastructure import FakeAuthManager
 
 
 def test_authorize_returns_spotify_url(api_client: TestClient) -> None:

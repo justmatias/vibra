@@ -24,7 +24,8 @@ class FakeVectorStore:
     def track_exists(self, track_id: str) -> bool:
         return track_id in self._tracks
 
-    def search_by_vibe(self, query: str, n_results: int = 10) -> dict[str, list]:
+    def search_by_vibe(self, query: str, n_results: int = 10) -> dict[str, list]:  # pylint: disable=no-self-use
+        _query = query
         tracks = list(self._tracks.values())[:n_results]
         return {
             "ids": [[t.track_id for t in tracks]],
@@ -44,7 +45,7 @@ class FakeVectorStore:
     def count_tracks(self) -> int:
         return len(self._tracks)
 
-    def _to_metadata(self, track: EnrichedTrack) -> dict:
+    def _to_metadata(self, track: EnrichedTrack) -> dict:  # pylint: disable=no-self-use
         spotify_track = track.track.track
         return {
             "track_id": track.track_id,

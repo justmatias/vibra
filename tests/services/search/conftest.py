@@ -2,8 +2,7 @@ import pytest
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from vibra.domain import EnrichedTrack, SavedTrack
-from vibra.infrastructure.generation.fake import FakeTextGenerator
-from vibra.infrastructure.vector_store.fake import FakeVectorStore
+from vibra.infrastructure import FakeTextGenerator, FakeVectorStore
 from vibra.services import SearchService
 
 

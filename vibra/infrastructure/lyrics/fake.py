@@ -8,4 +8,6 @@ class FakeLyricsProvider:
         self._lyrics = lyrics
 
     def search_song(self, title: str, artist: str) -> str:
+        _title = title
+        _artist = artist
         return self._lyrics
