@@ -281,4 +281,3 @@ Current architecture supports a single authenticated user (token cached to `data
 - [ ] `GET /api/comparison/{friend_username}/card`
   - Generates a self-contained HTML or PNG comparison card from a `MusicSimilarity` result
   - No external upload — user downloads and shares manually
-
